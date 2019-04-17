@@ -12,13 +12,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // !! Assumes preprocessing of strings !!
+// 'type' property in questions list defines whether the question allows multiple response selections, or just one 
+//      will be a string labeled 'multiple' or 'single'
 var PollSchema = new Schema({
     name = String,
-    type = String, // stores whether the poll allows for only one selected response, or multiple 
+    active = Boolean,
     dateCreated = { type: Date, default: new Date() }, // creates a new date object that holds the current time
     dateCompleted = Date,
-    questions = [String],
-    responses = [Number]
+    questions = [{ type: String, question: String, options: [String], responses: [Number] }] //contains a list of JSON, which holds the question and responses for each question of a poll
 });
 
 //Virtual property 'Url' returns the url of the poll (called by Poll.Url())
