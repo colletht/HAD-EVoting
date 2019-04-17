@@ -19,7 +19,7 @@ router.get('simpoll/', function (req, res){
 });
 
 //login page getter
-router.get('simpoll/login/', function(req, res){
+router.get('simpoll/users/login/', function(req, res){
     res.send("Login Page");     //
 });
 
