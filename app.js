@@ -4,6 +4,11 @@
 const Express = require('express'); //Requires the express module (a class)
 const app = Express(); //Instantiates an express object
 
+
+// View engine setup.
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
 //the client will send a get request to the "/" link when first joining 
 // and we respond with "Hello World"
 app.get('/', (request, response) => {
