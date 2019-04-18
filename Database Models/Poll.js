@@ -19,7 +19,7 @@ var PollSchema = new Schema({
     active: Boolean,
     dateCreated: { type: Date, default: new Date() }, // creates a new date object that holds the current time
     dateCompleted: Date,
-    questions: [{ type: String, question: String, options: [String], responses: [Number] }] //contains a list of JSON, which holds the question and responses for each question of a poll
+    questions: [{ type: {type: String}, question: String, options: [String], responses: [Number] }] //contains a list of JSON, which holds the question and responses for each question of a poll
 });
 
 //Virtual property 'Url' returns the url of the poll (called by Poll.Url())
