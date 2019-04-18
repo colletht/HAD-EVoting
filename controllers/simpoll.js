@@ -12,7 +12,7 @@ var userController = require("./UserController");
 var pollController = require("./PollController");
 
 router.get('/', function (req,res,next){
-    res.send("Site home page will be displayed here");
+    res.send("NOT IMPLEMENTED: Site home page will be displayed here");
 });
 
 //GET and POST requests for registration
