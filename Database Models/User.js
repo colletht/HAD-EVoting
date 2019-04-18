@@ -26,12 +26,12 @@ var UserSchema = new Schema({
 //          containing 'fault' which gives a string of what caused an unsuccessful login (null if successful login)
 //          and containing 'user' which is the user document if found (null if unsuccessful login)
 UserSchema.statics.login = function(username, pass){
-   return this.find({ username: username }, function(err, users){
+   return this.findOne({ username: username }, function(err, user){
       if (err) return handleError(err);
 
       if (user == null) return { successfull: false, fault: 'username', user: null }
       else if (user.password != pass) return { successfull: false, fault: 'password', user: null}
-      return { successfull: true, fault: null, user: users[0] }
+      return { successfull: true, fault: null, user: user }
    });
 };
 
