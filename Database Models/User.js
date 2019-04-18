@@ -20,20 +20,5 @@ var UserSchema = new Schema({
    polls: [{ type: Schema.Types.ObjectId, ref: 'Poll'}] // list of objectID's of polls the user has created
 });
 
-//UserSchema static function which checks for successfull login by searching the database (called by User.Login())
-//Input: Username, Password
-//Returns: JSON containing a boolean 'successfull' (whether the login would be successful or not),
-//          containing 'fault' which gives a string of what caused an unsuccessful login (null if successful login)
-//          and containing 'user' which is the user document if found (null if unsuccessful login)
-UserSchema.statics.login = function(username, pass){
-   return this.findOne({ username: username }, function(err, user){
-      if (err) return handleError(err);
-
-      if (user == null) return { successfull: false, fault: 'username', user: null }
-      else if (user.password != pass) return { successfull: false, fault: 'password', user: null}
-      return { successfull: true, fault: null, user: user }
-   });
-};
-
 
 module.exports = mongoose.model('User', UserSchema);
