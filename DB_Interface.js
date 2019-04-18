@@ -57,11 +57,11 @@ function pollCreate(name, date_complete, questions, cb){
 function pollDelete(id, cb){
     Poll.findByIdAndDelete(id, function (err, poll){
         if (err){
-            if (cb) cb(err)
+            if (cb) cb(err, null)
             return
         }
         console.log('Deleted Poll: ' + poll)
-        if (cb) cb(err)     
+        if (cb) cb(null, poll)     
     });
 }
 
@@ -78,16 +78,16 @@ function pollAddResponse(id, votes, cb){
             return
         }
         
-        var questions = poll.questions; // gets the questions list from the poll
+        var questions = poll.questions.toObject() // gets the questions list from the poll
 
         //adds one vote to each response selected in questions
         for(var i = 0; i < votes.length; i++){
             for(var j = 0; j < votes[i].length; j++){
-                questions[i].responses[votes[i][j]]++
+                questions[i].responses[votes[i][j]] += 1
             }
         }
 
-        poll.questions = questions; // puts new questions list into the poll document
+        poll.questions = questions // puts new questions list into the poll document
         poll.save(function(err){
             if (err) {
                 if (cb) cb(err, null)
@@ -112,16 +112,18 @@ function pollAll(cb){
     });
 }
 
-//Changes poll to inactive so it unable to be voted on
+//Changes poll to inactive so it unable to be voted on, and updates the date completed
 //Parameters: 'id' (string type) tbe id of the poll, callback function
 //Callback: error argument 
 function pollComplete(id, cb){
-    Poll.findByIdAndUpdate(id, { active: false }, function(err, poll){
+    var now = new Date
+    
+    Poll.findByIdAndUpdate(id, { active: false, dateCompleted: now }, function(err, poll){
         if (err) {
             if (cb) cb(err)
             return
         }
-        console.log('Completed Poll' + poll);
+        console.log('Completed Poll: ' + poll);
         if (cb) cb(err)
     });
 }
@@ -228,7 +230,7 @@ function userAll(cb){
 //Callback: error argument, fault (string) which states whether the fault was the username or password (null if successful login),
 //          and the user (mongoose document object) will be returned if it's a successful login (null if unsuccessful) 
 function userLogin(username, pass, cb){
-    this.findOne({ username: username }, function (err, user) {
+    User.findOne({ username: username }, function (err, user) {
         if (err) {
             if (cb) cb(err, null, null)
             return
