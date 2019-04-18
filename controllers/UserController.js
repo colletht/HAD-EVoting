@@ -1,3 +1,13 @@
+/*
+* Name: Harry Collet
+* Date: 4/17/19
+* Description: Controller module defined here that defines callback functions for HTTP requests having to do with Users. 
+*              This object is resposible for processing these requests and calling the 
+*              appropriate database functions and then eachoing the appropriate result back
+*              to the web.
+*/
+
+//here we require the model that drew made for user
 //var user = require(<path to user model>)
 
 exports.userList = function(req, res){

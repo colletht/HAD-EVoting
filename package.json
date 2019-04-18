@@ -19,6 +19,7 @@
   "homepage": "https://github.com/colletht/HAD-EVoting#readme",
   "dependencies": {
     "express": "^4.16.4",
+    "express-validator": "^5.3.1",
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.8"
   }
