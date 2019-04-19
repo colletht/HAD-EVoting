@@ -9,14 +9,15 @@ const app = Express() //Instantiates an express object
 
 
 // View engine setup.
-const path = require('path')
+const path = require('path') // to be able to use the path module
+app.use(Express.static(path.join(__dirname, 'views'))) // to be able to path to the scripts and styles in pug files
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 //the client will send a get request to the "/" link when first joining 
-// and we respond with "Hello World"
+// and we respond by rendering the index view
 app.get('/', (request, response) => {
-   response.send('Hello World')
+   response.render('index', {title: 'SimPoll'})
    console.log('User connected!') 
 });
 
