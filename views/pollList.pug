@@ -1,0 +1,16 @@
+// author: Harry Collet
+// date: 4/18/19
+// description: This is the page that will list all public polls on our website
+//              This page extends layout
+
+extends layout
+block content
+    h1 = title
+
+    ul
+        each poll in pollList
+            li
+                a(href = poll.url) #{poll.name}
+                | (created: #{poll.dateCreated})
+        else
+            li There are no polls open at this time

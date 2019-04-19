@@ -1,0 +1,44 @@
+// author: Harry Collet
+// date: 4/18/19
+// description: This is the 'base class' for our layout design, it specifies the variables 
+//              and a default stylesheet for our entire website, block content is the part 
+//              that will be replaced with new views later
+
+
+doctype html
+html(lang = 'en')
+    head
+        title = title
+        user = user
+
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        //script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+        //script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+        //link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        div(class='container-fluid')
+            div(class='row')
+                div(class='col-sm-2')
+                    block sidebar
+                        ul(class='sidebar-nav')
+                            li 
+                                a(href='/simpoll') Home
+                            li 
+                                a(href='/simpoll/users/login') Login
+                            li 
+                                a(href='/simpoll/users/register') Register
+                            li
+                                if user                                                     //if variable user has stuff in it provide option to view account details
+                                    a(href='simpoll/users/'+user) Account information       
+                                    //all other poll options will be given when the user views their own polls
+                            li 
+                                hr
+                            li 
+                                a(href='/simpoll/polls') All polls
+                            li 
+                                a(href='/simpoll/polls/create') Create new poll
+                
+                div(class='col-sm-10')
+                    block content  

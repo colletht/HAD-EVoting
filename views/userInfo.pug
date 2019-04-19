@@ -1,0 +1,24 @@
+// author: Harry Collet
+// date: 4/18/19
+// description: This is the page that displays details about the user. It can only be accessed if the user
+//              is logged in. It extends layout as well
+
+extends layout
+block content
+    h1 User: #{user.username}
+    
+        div(style='margin-left:20px;margin-top:20px')
+            h3 Account Information
+
+            ul
+                li Full Name: #{user.fullName}
+                li Email:     #{user.email}
+            
+            h4 User Polls
+
+            ul
+                each poll in polls
+                    li  
+                        a(href = poll.url) #{poll.name}
+                else
+                    p You don't have any polls yet. Why not create one now!
