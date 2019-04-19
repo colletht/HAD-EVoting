@@ -1,0 +1,46 @@
+// Drew English
+// 4/18/2019
+// Main title and nav bar that will display on every page
+// When changing style and script blocks just append to them, if you do not then the main nav will lose its style and scripts
+
+doctype html
+
+html
+    head
+        meta(charset='UTF-8')
+
+        title SimPoll
+
+        block style
+            link(rel='stylesheet' href='/styles/mainNav.css')
+        block scripts
+            script(src='/lib/jquery-3.3.1.min.js')
+            script(src='/scripts/mainNav.js')
+    body
+        header.main-header
+            .logo
+                a.hover-target(href='#')
+                    span sim
+                    | poll
+            .menu-icon.hover-target
+                span#top.menu-icon_line
+                span#mid.menu-icon_line
+                span#bot.menu-icon_line
+        .nav
+            ul.nav-list
+                li.nav_list-item.current
+                    a.hover-target(href='#')
+                        span home
+                li.nav_list-item
+                    a.hover-target(href='#')
+                        span my polls
+                li.nav_list-item
+                    a.hover-target(href='#')
+                        span account
+                li.nav_list-item
+                    a.hover-target(href='#')
+                        span login
+                li.nav_list-item
+                    a.hover-target(href='#')
+                        span about
+        block content
