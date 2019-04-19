@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/colletht/HAD-EVoting#readme",
   "dependencies": {
+    "async": "^2.6.2",
     "express": "^4.16.4",
     "express-validator": "^5.3.1",
     "mongodb": "^3.1.13",

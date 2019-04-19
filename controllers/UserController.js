@@ -27,6 +27,7 @@ exports.userRegisterGet = function(req, res){
     res.send("Display form for user registration GET");
 };
 
+//TODO: Check that username is not already in database
 //array of middleware functions to be called in order in the process of validating the user form
 exports.userRegisterPost = [
     //validate that the username is not empty
