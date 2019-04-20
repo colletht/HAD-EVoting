@@ -23,7 +23,8 @@ exports.pollDetail = function(req,res){
 };
 
 exports.pollCreateGet = function(req,res){
-    res.send("NOT IMPLEMENTED: Handles the creation from for a poll GET");
+    //res.send("NOT IMPLEMENTED: Handles the creation from for a poll GET");
+    res.render('pollCreate');
 };
 
 exports.pollCreatePost = function(req,res){

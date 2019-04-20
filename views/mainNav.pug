@@ -29,8 +29,8 @@ html
                 span#bot.menu-icon_line
         .nav
             //- before ':' is the name of the nav list item, after ':' is the link it will take you to
-            - var notLoggedinNav = { 'home':'/', 'all polls':'simpoll/polls', 'all users':'simpoll/users', 'login':'/simpoll/users/login', 'register':'simpoll/users/register' }
-            - if(undefined !== session && session.user_id) var loggedinNav = { 'home':'/', 'all polls':'/simpoll/polls', 'my polls':'/simpoll/polls/' + session.user_id, 'my account':'/simpoll/users/' + session.user_id, 'logout':'/users/logout' }
+            - var notLoggedinNav = { 'home':'/', 'all polls':'/simpoll/polls', 'all users':'/simpoll/users', 'login':'/simpoll/users/login', 'register':'/simpoll/users/register' }
+            - if(undefined !== session && session.user_id) var loggedinNav = { 'home':'/', 'all polls':'/simpoll/polls', 'my polls':'/simpoll/polls/' + session.user_id, 'my account':'/simpoll/users/' + session.user_id, 'logout':'/simpoll/users/logout' }
 
             //-pugjs function
             mixin navList(list)

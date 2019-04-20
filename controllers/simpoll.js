@@ -18,9 +18,12 @@ router.get('/', function (req,res,next){
 });
 
 //GET request for homepage, displays homepage
-router.get('/simpoll', function(req,res,next){
-    res.render('../views/index.pug');
-});
+//the client will send a get request to the "/" link when first joining 
+// and we respond by rendering the index view
+router.get('/simpoll', (request, response) => {
+    response.render('index', {title: 'SimPoll'})
+    console.log('User connected!') 
+ });
 
 //GET and POST requests for registration
 router.get('/simpoll/users/register', userController.userRegisterGet);

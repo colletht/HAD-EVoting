@@ -21,8 +21,8 @@ exports.userDetail = function(req, res){
 
 //handles get request and renders and displays form for user registration
 exports.userRegisterGet = function(req, res){
-    //res.render('UserRegisterForm', {title: 'Register User' });
-    res.send("Display form for user registration GET");
+    res.render('userRegister', {title: 'Register User' });
+    //res.send("Display form for user registration GET");
 };
 
 //TODO: Check that username is not already in database
@@ -78,8 +78,8 @@ exports.userRegisterPost = [
 ];
 
 exports.userLoginGet = function(req, res){
-    //res.render('UserLoginForm', {title: 'Login'});
-    res.send("Display form for user login GET");
+    res.render('userLogin', {title: 'Login'});
+    //res.send("Display form for user login GET");
 };
 
 //array of middelware functions to process the input given to the login form
