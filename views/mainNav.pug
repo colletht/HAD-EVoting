@@ -1,7 +1,8 @@
-// Drew English
-// 4/18/2019
-// Main title and nav bar that will display on every page
-// When changing style and script blocks just append to them, if you do not then the main nav will lose its style and scripts
+//- Drew English
+//- 4/18/2019
+//- Main title and nav bar that will display on every page
+//- When changing style and script blocks just append to them, if you do not then the main nav will lose its style and scripts
+//- passing in a variable when rendering the view allows you to use it in pug, 
 
 doctype html
 
@@ -9,9 +10,9 @@ html
     head
         meta(charset='UTF-8')
 
-        title SimPoll
-
-        block style
+        block vars
+            title= title
+        block styles
             link(rel='stylesheet' href='/styles/mainNav.css')
         block scripts
             script(src='/lib/jquery-3.3.1.min.js')
@@ -19,7 +20,7 @@ html
     body
         header.main-header
             .logo
-                a.hover-target(href='#')
+                a.hover-target(href='/')
                     span sim
                     | poll
             .menu-icon.hover-target
@@ -27,20 +28,26 @@ html
                 span#mid.menu-icon_line
                 span#bot.menu-icon_line
         .nav
+            //- before ':' is the name of the nav list item, after ':' is the link it will take you to
+            - var notLoggedinNav = { 'home':'/', 'all polls':'/polls', 'all users':'/users', 'login':'/users/login', 'register':'/users/register' }
+            - if(undefined !== session && session.user_id) var loggedinNav = { 'home':'/', 'all polls':'/polls', 'my polls':'/polls/' + session.user_id, 'my account':'/users/' + session.user_id, 'logout':'/users/logout' }
+
+            //-pugjs function
+            mixin navList(list)
+                each link, name in list
+                    if name === currentPage
+                        li.nav_list-item.current
+                            a.hover-target(href=link)
+                                span= name
+                    else
+                        li.nav_list-item
+                            a.hover-target(href=link)
+                                span= name
+
             ul.nav-list
-                li.nav_list-item.current
-                    a.hover-target(href='#')
-                        span home
-                li.nav_list-item
-                    a.hover-target(href='#')
-                        span my polls
-                li.nav_list-item
-                    a.hover-target(href='#')
-                        span account
-                li.nav_list-item
-                    a.hover-target(href='#')
-                        span login
-                li.nav_list-item
-                    a.hover-target(href='#')
-                        span about
+                if undefined !== session && session.user_id
+                    +navList(loggedinNav)
+                else
+                    +navList(notLoggedinNav)
+                
         block content

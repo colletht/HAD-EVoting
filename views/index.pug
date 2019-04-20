@@ -1,15 +1,23 @@
+//- (this style of comment is not converted to html, therefore does not give any errors)
+//- ('//' is converted to an html comment)
+
+//- author: Harry Collet
+//- date: 4/18/19
+//- description: This is the homepage for our website, it inherits from layout and
+//-              thus uses the base layout defined there
+
 extends mainNav
 
-block append style
+block append vars
+    - var currentPage = 'home'
+
+block append styles
     link(rel='stylesheet' href='/styles/index.css')
     
 
 block content
-    // author: Harry Collet
-    // date: 4/18/19
-    // description: This is the homepage for our website, it inherits from layout and
-    //              thus uses the base layout defined there
     .new-poll
         h1#header create a poll
-        button#button.hover-target(type='button')
-            span new poll
+        a(href='/polls/create')
+            #button.hover-target(type='button')
+                span new poll
