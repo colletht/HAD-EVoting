@@ -9,9 +9,7 @@
 
 const {body, validationResult} = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-
-//here we require the model that drew made for user
-//var user = require(<path to user model>)
+const { dbInterface } = require('../DB_Interface');
 
 exports.userList = function(req, res){
     res.send("NOT IMPLEMENTED: Print list of users");
@@ -69,6 +67,11 @@ exports.userRegisterPost = [
             return;
         }else{
             //TODO: no errors and can add user to the database
+            dbInterface.userCreate(user.username,user.password,user.fullname,user.email, function(err, newUser){
+                if(err)
+                    console.log("An error occured: " + err);
+                //figure out what to do with user here, do we need to do something?
+            });
         }
 
     }
@@ -95,18 +98,21 @@ exports.userLoginPost = [
     (req,res,next) => {
         const errors = validationResult(req);
 
-        //check here if username password matches with one in the database, if not passback that error as well
-        var success = true;
-
         if(!errors.isEmpty()){
             res.render('UserLoginForm', {title: 'Login', errors: errors.array()});
             return;
-        }else if(!success){ //username and password pair not found in database
-            //sets the loginerr field to display an error message, loginerr being a field specified in the form
-            res.render('UserLoginForm', {title: 'Login', loginerr: 'Either the username or password field is incorrect, please try again'}); 
-            return;
         }else{
             //TODO: login successfull, must figure out how to make the user be logged in now
+            dbInterface.userLogin(req.body.username, req.body.password, function(nameErr, passErr, newUser){
+                if(nameErr && passErr)
+                    res.render('UserLoginForm', {title: 'Login', loginerr: 'Either the username or password field is incorrect, please try again'}); 
+                else if(nameErr)
+                    res.render('UserLoginForm', {title: 'Login', loginerr: 'That username does not match any in our database, please try again'}); 
+                else if(passErr)
+                    res.render('UserLoginForm', {title: 'Login', loginerr: 'That password does not correspond to the given username, please try again'}); 
+                
+                    //figure out how to store newUser
+            });
         }
     }
 
