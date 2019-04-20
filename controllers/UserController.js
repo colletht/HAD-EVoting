@@ -21,7 +21,8 @@ exports.userDetail = function(req, res){
 
 //handles get request and renders and displays form for user registration
 exports.userRegisterGet = function(req, res){
-    res.render('userRegister', {title: 'Register User' });
+    res.locals.session = req.session // transfer session to new page
+    res.render('userRegister', {title: 'Register' });
     //res.send("Display form for user registration GET");
 };
 
@@ -50,6 +51,7 @@ exports.userRegisterPost = [
 
     //now process request when fields has been validated and sanitized
     (req,res,next) => {
+        console.log(req.body) // prints body of request
         //extract errors from req
         const errors = validationResult(req);
 
@@ -78,6 +80,7 @@ exports.userRegisterPost = [
 ];
 
 exports.userLoginGet = function(req, res){
+    res.locals.session = req.session // transfer session to new page
     res.render('userLogin', {title: 'Login'});
     //res.send("Display form for user login GET");
 };
@@ -96,6 +99,7 @@ exports.userLoginPost = [
 
     //process request
     (req,res,next) => {
+        console.log(req.body) // prints body of request
         const errors = validationResult(req);
 
         if(!errors.isEmpty()){

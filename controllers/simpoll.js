@@ -20,8 +20,10 @@ router.get('/', function (req,res,next){
 //GET request for homepage, displays homepage
 //the client will send a get request to the "/" link when first joining 
 // and we respond by rendering the index view
-router.get('/simpoll', (request, response) => {
-    response.render('index', {title: 'SimPoll'})
+router.get('/simpoll', (req, res) => {
+    res.locals.title = 'SimPoll' // can set variables in the pug file this way
+    res.locals.session = req.session // adds the session variable to the pug file so we are able to access it
+    res.render('index')
     console.log('User connected!') 
  });
 
