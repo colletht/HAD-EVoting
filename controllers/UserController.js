@@ -118,3 +118,8 @@ exports.userLoginPost = [
 
 ];
     
+
+exports.userLogoutGet = function(req,res){
+    //TODO: Figure out what else is needed to log out a user
+    res.redirect('/simpoll');
+}
