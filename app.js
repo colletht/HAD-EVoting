@@ -6,7 +6,9 @@
 const Express = require('express') //Requires the express module (a class)
 const app = Express() //Instantiates an express object
 
+var routes = require('./controllers/simpoll');
 
+app.use('/',routes);
 
 // View engine setup.
 const path = require('path') // to be able to use the path module
@@ -14,12 +16,7 @@ app.use(Express.static(path.join(__dirname, 'views'))) // to be able to path to 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-//the client will send a get request to the "/" link when first joining 
-// and we respond by rendering the index view
-app.get('/', (request, response) => {
-   response.render('index', {title: 'SimPoll'})
-   console.log('User connected!') 
-});
+
 
 
 //This starts the server and displays in the terminal which port the server is listening on
