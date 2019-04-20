@@ -1,0 +1,88 @@
+.newpoll {
+    top: 15%;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+#header {
+    font-weight: 900;
+    font-size: 38px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0px var(--secondary-color);
+}
+
+#name {
+    margin-bottom: 30px;
+    width: 25%;
+}
+
+.questionLabel {
+    display: inline-block;
+    margin-right: 20px;
+    position: relative;
+    right: 10%;
+}
+
+.optionsList {
+    list-style-type: none;
+    width: 94%;
+}
+
+.options {
+    margin-bottom: 1%;
+    width: 22%;
+}
+
+input {
+    font-family: var(--default-font-family);
+    padding: .6% .8%;
+    outline: none;
+    border: 1px solid var(--default-font-color);
+    border-radius: 10px;
+}
+
+select {
+    font-family: var(--default-font-family);
+    margin-right: 10px;
+    padding: .6% .8%;
+    outline: none;
+    border: 1px solid var(--default-font-color);
+    border-radius: 10px;
+    position: relative;
+    right: 10%;
+}
+
+.options#question {
+    position: relative;
+    right: 10%;
+    width: 30%;
+}
+
+.button {
+   font-family: var(--default-font-family);
+   background-color: var(--secondary-color);
+   text-transform: uppercase;
+   color: #fff;
+   font-weight: 700;
+   border: none;
+   border-radius: 20px;
+   padding: 12px;
+   width: 125px;
+   display: inline-block;
+   transition: box-shadow .3s ease;
+   margin-right: 10px;
+}
+
+.button:hover {
+   box-shadow: 1px 4px 3px 0 rgba(0,0,0,0.24); /*0 17px 50px 0 rgba(0,0,0,0.19);*/
+}
+
+.addbtn {
+    width: 150px;
+}
+
+.removebtn {
+    width: 175px;
+}

@@ -1,0 +1,49 @@
+extends mainNav
+
+block append vars
+    - var currentPage = 'create poll'
+
+block append styles
+    link(rel='stylesheet' href='/styles/pollCreate.css')
+
+block append scripts
+    script(src='/lib/jquery-3.3.1.min.js')
+    script(src='/scripts/pollCreate.js')
+
+block content
+    .newpoll
+        h1#header new poll creation
+        
+        mixin question(num)
+            h3.questionLabel= 'Question ' + num + ':'
+            select.dropdown#qtype(name='questionType-'+num)
+                option(hidden, disabled, selected, value) -- select an option --
+                option(value='single') Single Response
+                option(value='multiple') Multiple Response
+            input.options#question(type='text', name='question-'+num, placeholder='Question')
+            ul.optionsList
+                - for(var i = 1; i < 5; i++) 
+                    - name = 'option-' + num + '-' + i
+                    li 
+                        input.options(type='text', name=name, placeholder='Option '+i)
+            
+        form#form(method='POST', action='')
+            input#name(type='text', placeholder='Poll Name', name='pollName')
+            .question#question-1(style='visibility:hidden;')
+                +question(1)
+                button.button.hover-target.addbtn#q2add(type='button') add question
+                button.button.hover-target.submitbtn(type='submit') create poll
+            .question#question-2(style='visibility:hidden;')
+                +question(2)
+                button.button.hover-target.addbtn#q3add(type='button') add question
+                button.button.hover-target.removebtn#q2remove(type='button') remove question
+                button.button.hover-target.submitbtn(type='submit') create poll
+            .question#question-3(style='visibility:hidden;')
+                +question(3)
+                button.button.hover-target.addbtn#q4add(type='button') add question
+                button.button.hover-target.removebtn#q3remove(type='button') remove question
+                button.button.hover-target.submitbtn(type='submit') create poll
+            .question#question-4(style='visibility:hidden;')
+                +question(4)
+                button.button.hover-target.removebtn#q4remove(type='button') remove question
+                button.button.hover-target.submitbtn(type='submit') create poll
