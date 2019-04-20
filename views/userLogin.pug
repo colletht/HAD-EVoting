@@ -1,0 +1,25 @@
+extends mainNav
+
+block append vars
+    - var currentPage = 'login'
+
+block append styles
+    link(rel='stylesheet' href='/styles/userLogin.css')
+
+block content
+    .login
+        h1#header user login
+        form(method='POST' action='')
+            ul.forms-group
+                li
+                    input.form#username(type='text', placeholder='Username', name='username', value=(undefined === username ? '' : username.name))
+                li
+                    input.form#password(type='password', placeholder='Password', name='password', value=(undefined === password ? '' : password.name))
+            button.button.hover-target(type='submit') login
+        //- when the button is clicked a post request is sent to '/users/login'
+
+        if errors
+            ul
+                each error in errors
+                    li!= error.msg
+    
