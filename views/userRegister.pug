@@ -1,0 +1,28 @@
+extends mainNav
+
+block append vars
+    - var currentPage = 'register'
+
+block append styles
+    link(rel='stylesheet' href='/styles/userRegister.css')    
+
+block content
+    .register
+        h1#header new user registration
+        form(method='POST' action='')
+            ul.forms-group
+                li
+                    input.form#username(type='text', placeholder='Full Name', name='fullname', value=(undefined === fullName ? '' : fullName.name))
+                li
+                    input.form#email(type='email', placeholder='Email', name='email', value=(undefined === email ? '' : email.name))
+                li
+                    input.form#username(type='text', placeholder='Username', name='username', value=(undefined === username ? '' : username.name))
+                li
+                    input.form#password(type='password', placeholder='Password', name='password', value=(undefined === password ? '' : password.name))
+            button.button.hover-target(type='submit') Register
+        //- when the button is clicked a post request is sent to '/users/register'
+
+        if errors
+            ul
+                each error in errors
+                    li!= error.msg
