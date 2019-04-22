@@ -19,7 +19,7 @@ block content
         //- when the button is clicked a post request is sent to '/users/login'
 
         if errors
-            ul
+            ul.error-list
                 each error in errors
                     li!= error.msg
     
