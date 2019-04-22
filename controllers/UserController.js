@@ -42,7 +42,7 @@ exports.userRegisterPost = [
     sanitizeBody('password').escape(),
 
     //validate the name
-    body('fullname').isLength({min:1}).withMessage('Must enter a name').isAlpha().withMessage('Must use only letters in name'),
+    body('fullname').isLength({min:1}).withMessage('Must enter a name'),
 
     sanitizeBody('fullname').escape(),
 
