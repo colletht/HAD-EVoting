@@ -1,24 +1,33 @@
-// author: Harry Collet
-// date: 4/18/19
-// description: This is the page that displays details about the user. It can only be accessed if the user
-//              is logged in. It extends layout as well
+//- author: Harry Collet
+//- date: 4/18/19
+//- description: This is the page that displays details about the user. It can only be accessed if the user
+//-              is logged in. It extends layout as well
 
-extends layout
+extends mainNav
+
+block append vars
+    - var currentPage = 'userInfo'
+
+block append styles
+    link(rel = 'stylesheet' href='/styles/userInfo.css')
+
 block content
-    h1 User: #{user.username}
-    
-        div(style='margin-left:20px;margin-top:20px')
-            h3 Account Information
+    .userInfo
+        h1#header #{curUser.username}
+        .allInfo
+            .accountInfo
+                h3 Account Information
 
-            ul
-                li Full Name: #{user.fullName}
-                li Email:     #{user.email}
-            
-            h4 User Polls
-
-            ul
-                each poll in polls
-                    li  
+                ul
+                    li Full Name: #{curUser.fullName}
+                    li Email:     #{curUser.email}
+                    li Username:  #{curUser.username}
+            .accountPolls
+                h3 User Polls
+                    p TODO: add poll display functionality
+//-            ul
+                 each poll in polls
+                     li  
                         a(href = poll.url) #{poll.name}
                 else
-                    p You don't have any polls yet. Why not create one now!
+//-                    p You don't have any polls yet. Why not create one now!

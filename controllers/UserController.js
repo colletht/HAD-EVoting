@@ -16,8 +16,16 @@ exports.userList = function(req, res){
 };
 
 exports.userDetail = function(req, res){
-    res.send("TODO: Implement the user detail page");
-    //res.render('userInfo', {title: "User Information"});
+    res.locals.title = 'UserDetailGet' // can set variables in the pug file this way
+    res.locals.session = req.session // transfer session to new page
+    //res.send("TODO: Implement the user detail page");
+    dbInterface.userFind(req.params.id, function(err, curUser){
+        if(err)
+            res.send(err);
+        else{
+            res.render('userInfo', {title: "User Information", curUser: curUser});
+        }
+    });
 };
 
 //handles get request and renders and displays form for user registration
