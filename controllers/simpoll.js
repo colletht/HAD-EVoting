@@ -35,14 +35,16 @@ router.post('/simpoll/users/register', userController.userRegisterPost);
 router.get('/simpoll/users/login', userController.userLoginGet);
 router.post('/simpoll/users/login', userController.userLoginPost);
 
+//GET request for logging out a user
+//Drew: moved above /users/:id so this takes precedence over /users/:id,
+//      otherwise the router tries to process the 'logout' path as a user id
+router.get('/simpoll/users/logout', userController.userLogoutGet);
+
 //GET requests for displaying user data
 router.get('/simpoll/users/:id',userController.userDetail);
 
 //GET request for displaying all users
 router.get('/simpoll/users', userController.userList);
-
-//GET request for logging out a user
-router.get('/simpoll/users/logout', userController.userLogoutGet);
 
 //GET request for displaying all polls
 router.get('/simpoll/polls', pollController.pollList);
