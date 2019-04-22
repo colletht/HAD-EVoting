@@ -6,9 +6,11 @@
 const Express = require('express') //Requires the express module (a class)
 const app = Express() //Instantiates an express object
 
-var routes = require('./controllers/simpoll');
 
-app.use('/',routes);
+
+app.use(Express.json())
+app.use(Express.urlencoded())
+
 
 // View engine setup.
 const path = require('path') // to be able to use the path module
@@ -22,6 +24,10 @@ var session = require('express-session')
 app.use(session({
    secret: 'simpollisgreat'
 }))
+
+
+var routes = require('./controllers/simpoll');
+app.use('/',routes);
 
 //the client will send a get request to the "/" link when first joining 
 // and we respond by rendering the index view
@@ -45,12 +51,10 @@ app.use(session({
 //Example of viewing a post request:
 
 //to be able to view the body of requests
-app.use(Express.json())
-app.use(Express.urlencoded())
 
-app.post('/users/register', function(req, res){
-   console.log(req.body) // prints body of request
-})
+//app.post('/users/register', function(req, res){
+//   console.log(req.body) // prints body of request
+//})
 
 
 
