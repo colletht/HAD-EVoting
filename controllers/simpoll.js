@@ -42,7 +42,7 @@ router.get('/simpoll/users/:id',userController.userDetail);
 router.get('/simpoll/users', userController.userList);
 
 //GET request for logging out a user
-router.get('simpoll/users/logout', userController.userLogoutGet);
+router.get('/simpoll/users/logout', userController.userLogoutGet);
 
 //GET request for displaying all polls
 router.get('/simpoll/polls', pollController.pollList);

@@ -9,18 +9,20 @@
 
 const {body, validationResult} = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-const { dbInterface } = require('../DB_Interface');
+const dbInterface = require('../DB_Interface');
 
 exports.userList = function(req, res){
     res.send("NOT IMPLEMENTED: Print list of users");
 };
 
 exports.userDetail = function(req, res){
-    res.send("NOT IMPLEMENTED: Display details of user");
+    res.send("TODO: Implement the user detail page");
+    //res.render('userInfo', {title: "User Information"});
 };
 
 //handles get request and renders and displays form for user registration
 exports.userRegisterGet = function(req, res){
+    res.locals.title = 'RegisterGet' // can set variables in the pug file this way
     res.locals.session = req.session // transfer session to new page
     res.render('userRegister', {title: 'Register' });
     //res.send("Display form for user registration GET");
@@ -51,27 +53,29 @@ exports.userRegisterPost = [
 
     //now process request when fields has been validated and sanitized
     (req,res,next) => {
+        res.locals.title = 'RegisterPost' // can set variables in the pug file this way
+        res.locals.session = req.session // adds the session variable to the pug file so we are able to access it
         console.log(req.body) // prints body of request
         //extract errors from req
         const errors = validationResult(req);
 
-        //create new user from the data in form
-        var user = new User({   
-            username: req.body.username,
-            password: req.body.password,
-            fullname: req.body.fullname,
-            email: req.body.email
-        });
-
         if(!errors.isEmpty()){
             //errors exist so rerender page with error messages
-            res.render('UserRegistrationForm', {title: 'Register User', user: user, errors: errors.array()});
+            res.render('userRegister', {title: 'Register User', errors: errors.array()});
             return;
         }else{
             //TODO: no errors and can add user to the database
-            dbInterface.userCreate(user.username,user.password,user.fullname,user.email, function(err, newUser){
-                if(err)
+            dbInterface.userCreate(req.body.username,req.body.password,req.body.fullname,req.body.email, function(err, newUser){
+                if(err){
                     console.log("An error occured: " + err);
+                    res.render('userRegister', {title: 'Register User', errors: err.array()});
+                }else{
+                    console.log("succesfully registered user " + newUser.username + ", with id: " + newUser._id);
+                    res.locals.session.curUserId = newUser._id;
+                    res.redirect('/simpoll/users/' + newUser._id);
+
+                }
+                
                 //figure out what to do with user here, do we need to do something?
             });
         }
@@ -80,6 +84,7 @@ exports.userRegisterPost = [
 ];
 
 exports.userLoginGet = function(req, res){
+    res.locals.title = 'LoginGet';
     res.locals.session = req.session // transfer session to new page
     res.render('userLogin', {title: 'Login'});
     //res.send("Display form for user login GET");
@@ -88,32 +93,39 @@ exports.userLoginGet = function(req, res){
 //array of middelware functions to process the input given to the login form
 exports.userLoginPost = [
     //validating and sanitizing the username field, will verify that it actually matches a username later
-    body('username').isLength({min:1}).withMessage('You must enter a username').trim(),
-
-    sanitizeBody('username').escape(),
+    body('username','You must enter a username').isLength({min:1}),
 
     //validating and sanitizing the password field, will verify that it actually matches a username later
-    body('password').isLength({min:1}).withMessage("You must enter a password").trim(),
+    body('password','You must enter a password').isLength({min:1}),
+
+    sanitizeBody('username').escape(),
 
     sanitizeBody('password').escape(),
 
     //process request
     (req,res,next) => {
+        res.locals.title = 'LoginPost' // can set variables in the pug file this way
+        res.locals.session = req.session // adds the session variable to the pug file so we are able to access it
         console.log(req.body) // prints body of request
         const errors = validationResult(req);
 
         if(!errors.isEmpty()){
-            res.render('UserLoginForm', {title: 'Login', errors: errors.array()});
+            res.render('userLogin', {title: 'Login', username: req.body.username, password: req.body.password, errors: errors.array()});
             return;
         }else{
             //TODO: login successfull, must figure out how to make the user be logged in now
             dbInterface.userLogin(req.body.username, req.body.password, function(nameErr, passErr, newUser){
                 if(nameErr && passErr)
-                    res.render('UserLoginForm', {title: 'Login', loginerr: 'Either the username or password field is incorrect, please try again'}); 
+                    res.render('userLogin', {title: 'Login', loginerr: 'Either the username or password field is incorrect, please try again'}); 
                 else if(nameErr)
-                    res.render('UserLoginForm', {title: 'Login', loginerr: 'That username does not match any in our database, please try again'}); 
+                    res.render('userLogin', {title: 'Login', loginerr: 'That username does not match any in our database, please try again'}); 
                 else if(passErr)
-                    res.render('UserLoginForm', {title: 'Login', loginerr: 'That password does not correspond to the given username, please try again'}); 
+                    res.render('userLogin', {title: 'Login', loginerr: 'That password does not correspond to the given username, please try again'}); 
+                else{
+                    console.log("Succesfully logged user " + newUser.username + " in with id: " + newUser._id);
+                    res.locals.session.curUserId = newUser._id;
+                    res.redirect('/simpoll/users/' + newUser._id);
+                }
                 
                     //figure out how to store newUser
             });
