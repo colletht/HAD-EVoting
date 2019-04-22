@@ -79,7 +79,7 @@ exports.userRegisterPost = [
                     res.render('userRegister', {title: 'Register User', errors: err.array()});
                 }else{
                     console.log("succesfully registered user " + newUser.username + ", with id: " + newUser._id);
-                    res.locals.session.curUserId = newUser._id;
+                    res.locals.session.user_id = newUser._id;
                     res.redirect('/simpoll/users/' + newUser._id);
 
                 }
@@ -131,7 +131,7 @@ exports.userLoginPost = [
                     res.render('userLogin', {title: 'Login', loginerr: 'That password does not correspond to the given username, please try again'}); 
                 else{
                     console.log("Succesfully logged user " + newUser.username + " in with id: " + newUser._id);
-                    res.locals.session.curUserId = newUser._id;
+                    res.locals.session.user_id = newUser._id;
                     res.redirect('/simpoll/users/' + newUser._id);
                 }
                 
