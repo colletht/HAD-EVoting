@@ -141,9 +141,9 @@ exports.userLoginPost = [
     }
 
 ];
-    
 
+//Drew:
 exports.userLogoutGet = function(req,res){
-    //TODO: Figure out what else is needed to log out a user
+    req.session.destroy() // destroys session so it no longer keeps track of the logged in user      
     res.redirect('/simpoll');
 }
