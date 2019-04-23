@@ -146,16 +146,25 @@ exports.pollCreatePost = [
             res.render('pollCreate',{errors:errors.array()});
             return;
         }else{
+            //construct array of questions depending on input questions, ugly if statement does this
+            var questions = [{type: req.body['questionType-1'], question: req.body['question-1'], options: [req.body['option-1-1'],req.body['option-1-2'],req.body['option-1-3'],req.body['option-1-4']], responses: [] }]
+            if(req.body['questionType-2']){
+                questions.push({type: req.body['questionType-2'], question: req.body['question-2'], options: [req.body['option-2-1'],req.body['option-2-2'],req.body['option-2-3'],req.body['option-2-4']], responses: [] })
+                if(req.body['questionType-3']){
+                    questions.push({type: req.body['questionType-3'], question: req.body['question-3'], options: [req.body['option-3-1'],req.body['option-3-2'],req.body['option-3-3'],req.body['option-3-4']], responses: [] })
+                    if(req.body['questionType-4']){
+                        questions.push({type: req.body['questionType-4'], question: req.body['question-4'], options: [req.body['option-4-1'],req.body['option-4-2'],req.body['option-4-3'],req.body['option-4-4']], responses: [] })
+                    }
+                }
+            }
+
             //put poll into database
-            dbInterface.pollCreate(req.body.pollName, null, [{type: {type: req.body['questionType-1']}, question: req.body['question-1'], options: [req.body['option-1-1'],req.body['option-1-2'],req.body['option-1-3'],req.body['option-1-4']], responses: [] },
-                                                             {type: {type: req.body['questionType-2']}, question: req.body['question-2'], options: [req.body['option-2-1'],req.body['option-2-2'],req.body['option-2-3'],req.body['option-2-4']], responses: [] },                                                             {type: {type: req.body.questionType-3}, question: req.body.question-3, options: [req.body.option-3-1,req.body.option-3-2,req.body.option-3-3,req.body.option-3-4], responses: [] },
-                                                             {type: {type: req.body['questionType-3']}, question: req.body['question-3'], options: [req.body['option-3-1'],req.body['option-3-2'],req.body['option-3-3'],req.body['option-3-4']], responses: [] },          
-                                                             {type: {type: req.body['questionType-4']}, question: req.body['question-4'], options: [req.body['option-4-1'],req.body['option-4-2'],req.body['option-4-3'],req.body['option-4-4']], responses: [] }],
+            dbInterface.pollCreate(req.body.pollName, null, questions,
                                                              function(err, newPoll){
                                                                 if(err){
                                                                     //if error display error when rerender page
                                                                     console.log("errors in database insertion, errors displayed to page. Error: " + String(err));
-                                                                    res.render('pollCreate',{errors: [err]});
+                                                                    res.render('pollCreate',{errors: [String(err)]});
                                                                 }else{
                                                                     //else if no error redirect to the given poll information page and also add that poll to the current users polls
                                                                     dbInterface.userAddPoll(res.locals.session.user_id, newPoll._id, (err) => console.log(err));
