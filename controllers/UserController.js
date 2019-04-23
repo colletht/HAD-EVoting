@@ -72,7 +72,6 @@ exports.userRegisterPost = [
             res.render('userRegister', {title: 'Register User', errors: errors.array()});
             return;
         }else{
-            //TODO: no errors and can add user to the database
             dbInterface.userCreate(req.body.username,req.body.password,req.body.fullname,req.body.email, function(err, newUser){
                 if(err){
                     console.log("An error occured: " + err);
@@ -122,20 +121,23 @@ exports.userLoginPost = [
             return;
         }else{
             //TODO: login successfull, must figure out how to make the user be logged in now
-            dbInterface.userLogin(req.body.username, req.body.password, function(nameErr, passErr, newUser){
-                if(nameErr && passErr)
-                    res.render('userLogin', {title: 'Login', loginerr: 'Either the username or password field is incorrect, please try again'}); 
-                else if(nameErr)
-                    res.render('userLogin', {title: 'Login', loginerr: 'That username does not match any in our database, please try again'}); 
-                else if(passErr)
-                    res.render('userLogin', {title: 'Login', loginerr: 'That password does not correspond to the given username, please try again'}); 
-                else{
+            dbInterface.userLogin(req.body.username, req.body.password, function(err, errStr , newUser){
+                if(!newUser){
+                    console.log("An error occured");
+                    if(errStr === 'username'){
+                        console.log("A Username error occured");
+                        res.render('userLogin', {title: 'Login', username: req.body.username, password:req.body.password, errors: ['That username does not match any in our database, please try again']}); 
+                    }else if(errStr === 'password'){
+                        console.log("A password error occured");
+                        res.render('userLogin', {title: 'Login', username: req.body.username, password:req.body.password, errors: ['That password does not correspond to the given username, please try again']}); 
+                    }else{
+                        res.render('userLogin', {title: 'Login', username: req.body.username, password:req.body.password, errors: ['No account exists with that username or password']}); 
+                    }
+                }else{
                     console.log("Succesfully logged user " + newUser.username + " in with id: " + newUser._id);
                     res.locals.session.user_id = newUser._id;
                     res.redirect('/simpoll/users/' + newUser._id);
                 }
-                
-                    //figure out how to store newUser
             });
         }
     }
