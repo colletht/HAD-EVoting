@@ -136,7 +136,11 @@ exports.userLoginPost = [
                 }else{
                     console.log("Succesfully logged user " + newUser.username + " in with id: " + newUser._id);
                     res.locals.session.user_id = newUser._id;
-                    res.redirect('/simpoll/users/' + newUser._id);
+                    if(res.locals.session.nextPage){
+                        res.redirect(res.locals.session.nextPage);
+                    }else{
+                        res.redirect('/simpoll/users/' + newUser._id);
+                    }
                 }
             });
         }

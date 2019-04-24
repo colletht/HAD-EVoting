@@ -27,7 +27,15 @@ exports.pollCreateGet = function(req,res){
     //res.send("NOT IMPLEMENTED: Handles the creation from for a poll GET");
     res.locals.title = "pollCreateGet";
     res.locals.session = req.session;
-    res.render('pollCreate');
+
+    //if user is not logged in redirect to login page and set nextPage as the current route
+    if(!res.locals.session.user_id){
+        res.locals.session.nextPage = '/simpoll/polls/create';
+        res.redirect('/simpoll/users/login');
+    }else{
+        res.render('pollCreate');
+    }
+
 };
 
 exports.pollCreatePost = [
@@ -51,6 +59,8 @@ exports.pollCreatePost = [
 
     //NOTE: Everything hereafter until the main callback follows the same pattern as the above code.
     //However everything below here is optional as only one question is required to make a poll
+    //there is a logic error here that I will fix if there is time but is not essential right now.
+    //it allows for any subsequent questions to have fewer than two options for an answer
 
     //Question 2
 
@@ -133,6 +143,8 @@ exports.pollCreatePost = [
     sanitizeBody('question-4-4').escape(),
 
     (req,res,next) => {
+
+
         res.locals.title = 'pollCreatePost';
         res.locals.session = req.session;
         console.log(req.body);
