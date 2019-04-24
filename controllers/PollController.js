@@ -214,7 +214,21 @@ exports.pollCompleteGet = function(req,res){
                 res.send(String(err));
                 console.log(String(err));
             }else{
-                res.render('pollVote', curPoll = newPoll);
+                dbInterface.userFind(res.locals.session.user_id, function(err, curUser){
+                    if(err){
+                        res.send(String(err));
+                        console.log(String(err))
+                    }else{
+                        var poll_owner;
+                        for(var i = 0; i < curUser.polls.length; i++){
+                            if(String(curUser.polls[i]) == String(newPoll._id)){
+                                poll_owner = true;
+                                break;
+                            }
+                        }
+                        res.render('pollVote', {curPoll:  newPoll, poll_owner: poll_owner});
+                    }
+                })
                 
             }
         })
@@ -222,9 +236,13 @@ exports.pollCompleteGet = function(req,res){
 
 };
 
-exports.pollCompletePost = function(req,res){
+exports.pollCompletePost = [
+    
+];
+
+/*function(req,res){
     res.send("NOT IMPLEMENTED: Handles the completion of the poll by user POST");
-};
+};*/
 
 exports.pollEndGet = function(req,res){
     res.send("NOT IMPLEMENTED: Handles the ending of polling period GET");
