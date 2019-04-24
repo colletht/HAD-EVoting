@@ -10,7 +10,7 @@ block append scripts
 block content
     .pollvote
         h1#header #{curPoll.name}
-        if curPoll.active
+        if curPoll.active && !voted_on
             form#form(method='POST', action='/simpoll/polls/'+curPoll._id+'/complete')
                 each question, i in curPoll.questions
                     h3.questionLabel #{question.question}
@@ -25,7 +25,7 @@ block content
                                 | #{option}
                     .space
                 button.button.hover-target#submitbtn(type='submit') submit poll
-                button.button.hover-target.sharebtn(type='button', data-clipboard-text='localhost:3000/simpoll/polls/'+curPoll._id) share poll
+                button.button.hover-target.sharebtn(type='button', data-clipboard-text='localhost:3000/simpoll/polls/'+curPoll._id+'/complete') share poll
             if poll_owner
                 form(method='POST', action='/simpoll/polls/'+curPoll._id+'/end')
                     button.button.hover-target#endbt(type='submit') end poll
@@ -38,13 +38,15 @@ block content
                     }
                     
                 h3.questionLabel #{question.question}
-                each reponse, j in question.responses
+                - for(var j = 0; j < question.responses.length; j++)
                     //- progress bar to show % of votes
+                    - var prog = Math.round(100 * (totalVotes > 0 ? (question.responses[j] / totalVotes) : 0))
+                    div.option
+                    | #{question.options[j] + ' ('+prog+'%)'}
                     .progress-bar
-                        - var prog = totalVotes > 0 ? (response / totalVotes) : 0
                         .progress(style='width:'+prog+'%;')
                 .space
-            button.button.hover-target.sharebtn(type='button', data-clipboard-text='localhost:3000/simpoll/polls/'+curPoll._id) share poll
+            button.button.hover-target.sharebtn(type='button', data-clipboard-text='localhost:3000/simpoll/polls/'+curPoll._id+'/complete') share poll
         
 
 
