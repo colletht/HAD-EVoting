@@ -18,6 +18,11 @@
     width: 94%;
 }
 
+.error-list{
+    list-style-type: none;
+    width: 94%;
+}
+
 .form {
     margin-bottom: 2%;
     width: 20%;

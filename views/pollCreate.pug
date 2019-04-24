@@ -47,3 +47,8 @@ block content
                 +question(4)
                 button.button.hover-target.removebtn#q4remove(type='button') remove question
                 button.button.hover-target.submitbtn(type='submit') create poll
+        
+        if errors
+            ul.error-list
+                each error in errors
+                    li!= error.msg
