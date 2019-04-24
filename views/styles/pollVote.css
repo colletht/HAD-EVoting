@@ -1,0 +1,70 @@
+.pollvote {
+    top: 15%;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+#header {
+    font-weight: 900;
+    font-size: 38px;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 0px var(--secondary-color);
+}
+
+.option {
+    margin-bottom: 1%;
+    text-align: left;
+    transform: translate(40%, 0%);
+}
+
+.questionLabel{
+    text-align: left;
+    transform: translate(40%, 0%);
+}
+
+.space {
+    margin-bottom: 3%;
+}
+
+#form {
+    margin-bottom: 1%;
+}
+
+.button {
+   font-family: var(--default-font-family);
+   background-color: var(--secondary-color);
+   text-transform: uppercase;
+   color: #fff;
+   font-weight: 700;
+   border: none;
+   border-radius: 20px;
+   padding: 12px;
+   width: 125px;
+   display: inline-block;
+   transition: box-shadow .3s ease;
+   margin-right: 10px;
+}
+
+.button:hover {
+   box-shadow: 1px 4px 3px 0 rgba(0,0,0,0.24); /*0 17px 50px 0 rgba(0,0,0,0.19);*/
+}
+
+.progress-bar {
+    height: 30px;
+    width: 30%;
+    background-color: rgb(240, 240, 240);    
+    transform: translate(115%, 0%);
+    margin-bottom: 1%;
+
+    padding-right: 5px;
+    border-radius: 20px;
+    text-align: right;
+}
+
+.progress {
+    height: 30px;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+}

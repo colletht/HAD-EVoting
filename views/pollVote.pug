@@ -1,0 +1,50 @@
+extends mainNav
+
+block append styles
+    link(rel='stylesheet' href='/styles/pollVote.css')
+
+block append scripts
+    script(src='/scripts/pollVote.js')
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js")
+
+block content
+    .pollvote
+        h1#header #{curPoll.name}
+        if curPoll.active
+            form#form(method='POST', action='/simpoll/polls/'+curPoll._id+'/complete')
+                each question, i in curPoll.questions
+                    h3.questionLabel #{question.question}
+                    each option, j in question.options
+                        if question.type === 'single'
+                            div.option
+                                input.option-input(type='radio', name='question-'+ (i+1), value=j)
+                                | #{option}
+                        else if question.type === 'multiple'
+                            div.option
+                                input.option-input(type='checkbox', name='question-'+ (i+1), value=j)
+                                | #{option}
+                    .space
+                button.button.hover-target#submitbtn(type='submit') submit poll
+                button.button.hover-target.sharebtn(type='button', data-clipboard-text='localhost:3000/simpoll/polls/'+curPoll._id) share poll
+            if poll_owner
+                form(method='POST', action='/simpoll/polls/'+curPoll._id+'/end')
+                    button.button.hover-target#endbt(type='submit') end poll
+        else
+            each question, i in curPoll.questions
+                -
+                    var totalVotes = 0
+                    for(var j = 0; j < question.responses.length; j++) {
+                        totalVotes += question.responses[j]
+                    }
+                    
+                h3.questionLabel #{question.question}
+                each reponse, j in question.responses
+                    //- progress bar to show % of votes
+                    .progress-bar
+                        - var prog = totalVotes > 0 ? (response / totalVotes) : 0
+                        .progress(style='width:'+prog+'%;')
+                .space
+            button.button.hover-target.sharebtn(type='button', data-clipboard-text='localhost:3000/simpoll/polls/'+curPoll._id) share poll
+        
+
+
