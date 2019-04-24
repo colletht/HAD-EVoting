@@ -180,7 +180,7 @@ exports.pollCreatePost = [
                                                                 }else{
                                                                     //else if no error redirect to the given poll information page and also add that poll to the current users polls
                                                                     dbInterface.userAddPoll(res.locals.session.user_id, newPoll._id, (err) => console.log(err));
-                                                                    res.redirect('/simpoll/polls/' + newPoll._id);
+                                                                    res.redirect('/simpoll/polls/' + newPoll._id + '/complete');
                                                                 }
                                                              });
         }
@@ -200,7 +200,26 @@ exports.pollDeletePost = function(req,res){
 };
 
 exports.pollCompleteGet = function(req,res){
-    res.send("NOT IMPLEMENTED: Handles the completion of poll by user GET");
+    res.locals.title = "pollCreateGet";
+    res.locals.session = req.session;
+
+    //TODO: do this if statement only if poll is still active
+    //if user is not logged in redirect to login page and set nextPage as the current route
+    if(!res.locals.session.user_id){
+        res.locals.session.nextPage = '/simpoll/polls/' + req.params.id + '/complete';
+        res.redirect('/simpoll/users/login');
+    }else{
+        dbInterface.pollFind(req.params.id, function(err, newPoll){
+            if(err){
+                res.send(String(err));
+                console.log(String(err));
+            }else{
+                res.render('pollVote', curPoll = newPoll);
+                
+            }
+        })
+    }
+
 };
 
 exports.pollCompletePost = function(req,res){
