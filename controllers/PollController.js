@@ -231,8 +231,9 @@ exports.pollCompleteGet = function(req,res){
                         console.log("Owns Poll: " + ownsPoll)
                         //if the current user has already voted on said poll
                         if(res.locals.session.votedPolls){
-                            res.end();
-                            res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: req.params.id in res.locals.session.votedPolls});    
+                            // the 'in' operator only works with properties of json's, changed to includes function for successfull search of voted on array
+                            res.render('pollVote', { curPoll: newPoll, poll_owner: ownsPoll, voted_on: res.locals.session.votedPolls.includes(req.params.id)});    
+                            res.end(); //cannot end a response before rendering.
                         }else
                             res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: false});    
                     }
