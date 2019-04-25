@@ -68,8 +68,5 @@ router.post('/simpoll/polls/:id/end', pollController.pollEndPost);
 router.get('/simpoll/polls/:id/delete', pollController.pollDeleteGet);
 router.post('/simpoll/polls/:id/delete', pollController.pollDeletePost);
 
-//GET and POST requests for sharing of a poll
-router.get('/simpoll/polls/:id/share', pollController.pollShareGet);
-router.get('/simpoll/polls/:id/share', pollController.pollSharePost);
 
 module.exports = router;
