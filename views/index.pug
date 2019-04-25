@@ -19,5 +19,8 @@ block content
     .new-poll
         h1#header create a poll
         a(href='/simpoll/polls/create')
-            #button.hover-target(type='button')
+            .button.hover-target#new-poll(type='button')
                 span new poll
+        a(href='/simpoll/polls')
+            .button.hover-target(type='button')
+                span go vote

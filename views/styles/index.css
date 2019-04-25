@@ -11,12 +11,12 @@
    font-weight: 900;
    font-size: 46px;
    line-height: 1;
-   margin-bottom: 60px;
+   margin-bottom: 70px;
    /* text-shadow: 1px 1px 0px #fff, 3px 3px 0px var(--secondary-color); */
    text-shadow: 2px 2px 0px var(--secondary-color);
 }
 
-#button {
+.button {
    font-family: var(--default-font-family);
    background-color: var(--secondary-color);
    text-transform: uppercase;
@@ -30,13 +30,13 @@
    transition: box-shadow .3s ease;
 }
 
-#button span {
+.button span {
    position: relative;
    display: inline-block;
    transition: all .3s ease;
 }
 
-#button span:after {
+.button span:after {
    content: "\00bb";
    position: absolute;
    opacity: 0;
@@ -47,15 +47,19 @@
 }
 
 /*Possibly shadow on hover*/
-#button:hover span {
+.button:hover span {
    padding-right: 15px;
 }
 
-#button:hover span:after {
+.button:hover span:after {
    opacity: 1;
    right: -5px;
 }
 
-#button:hover {
+.button:hover {
    box-shadow: 1px 4px 3px 0 rgba(0,0,0,0.24); /*0 17px 50px 0 rgba(0,0,0,0.19);*/
+}
+
+#new-poll {
+   margin-right: 4%;
 }
