@@ -1,9 +1,13 @@
 {
   "name": "HAD-EVoting",
   "version": "1.0.0",
+  "engines": {
+    "node":"10.15.1"
+  },
   "description": "A web based polling application. This app allows for several functionalities to do with voting such as: creating a poll, casting votes in online polls, and viewing diagnostics/results of polling sessions.",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
