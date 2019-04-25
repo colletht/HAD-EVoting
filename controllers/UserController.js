@@ -12,7 +12,17 @@ const { sanitizeBody } = require('express-validator/filter');
 const dbInterface = require('../DB_Interface');
 
 exports.userList = function(req, res){
-    res.send("NOT IMPLEMENTED: Print list of users");
+    // res.send("NOT IMPLEMENTED: Print list of users");
+    res.locals.session = req.session
+
+    dbInterface.userAll(function(err, userList){
+        if (err){
+            res.send(err)
+            return
+        }
+
+        res.render('userList', {title: 'All Users', user_list: userList})
+    })
 };
 
 exports.userDetail = function(req, res){
