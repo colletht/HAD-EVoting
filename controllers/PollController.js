@@ -218,13 +218,14 @@ exports.pollCompleteGet = function(req,res){
                     if(err){
                         res.send(String(err));
                     }else{
-                        console.log("Owns Poll: " + ownsPoll)
                         //if the current user has already voted on said poll
                         if(res.locals.session.votedPolls){
-                            res.end();
-                            res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: req.params.id in res.locals.session.votedPolls});    
-                        }else
+                            res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: userVotedOnPoll(res.locals.session.user_id, res.locals.session.votedPolls)});    
+                            return;
+                        }else{
                             res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: false});    
+                            return;
+                        }
                     }
                 })
             }
@@ -238,28 +239,23 @@ exports.pollCompletePost = function(req,res,next) {
         res.locals.session = req.session;
         //add poll id to sessions completed id's, check if votedPolls exists first though
         if(res.locals.session.votedPolls){
-            res.locals.session.votedPolls.push(req.params.id);
+            res.locals.session.votedPolls.push(String(res.locals.session.user_id));
         }else{
-            res.locals.session.votedPolls = [req.params.id];
+            res.locals.session.votedPolls = [String(res.locals.session.user_id)];
         }
 
         console.log(req.body);
 
-        /*
+
+        //creates nested array of answers reqired for pollAddResponse parameters
+        
         var responseArr = [];
-            for(var key in req.body){
+        for(var key in req.body){
             var tmpRes = [];
             for(var val in req.body[key]){
                 tmpRes.push(parseInt(req.body[key][val]));
             }
             responseArr.push(tmpRes);
-        }
-        */
-
-        //creates nested array of answers reqired for pollAddResponse parameters
-        var responseArr = [];
-        for(var val in req.body){
-            responseArr.push(parseInt(req.body[val]));
         }
         console.log(responseArr);
         
@@ -297,11 +293,19 @@ function userOwnsPoll(userId, pollId, cb){
         }else{
             for(var i = 0; i < curUser.polls.length; i++){
                 if(String(curUser.polls[i]) == String(pollId)){
-                    if (cb) cb(null, true);
+                    if (cb)  return cb(null, true);
                 }
             }
             if(cb) cb(null,false);
             
         }
     })
+}
+
+function userVotedOnPoll(userId, pollVotesList){
+    for (val in pollVotesList){
+        if (String(userId) == (pollVotesList[val]))
+            return true;
+    }
+    return false;
 }

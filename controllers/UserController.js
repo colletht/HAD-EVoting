@@ -33,7 +33,7 @@ exports.userDetail = function(req, res){
         if(err)
             res.send(err);
         else{
-            res.render('userInfo', {title: "User Information", curUser: curUser});
+            res.render('userInfo', {title: "User Information", curUser: curUser, user_pollList: curUser.polls});
         }
     });
 };
