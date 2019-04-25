@@ -15,14 +15,15 @@ block content
                 each question, i in curPoll.questions
                     h3.questionLabel #{question.question}
                     each option, j in question.options
-                        if question.type === 'single'
-                            div.option
-                                input.option-input(type='radio', name='question-'+ (i+1), value=j)
-                                | #{option}
-                        else if question.type === 'multiple'
-                            div.option
-                                input.option-input(type='checkbox', name='question-'+ (i+1), value=j)
-                                | #{option}
+                        if option != null
+                            if question.type === 'single'
+                                div.option
+                                    input.option-input(type='radio', name='question-'+ (i+1), value=j)
+                                    | #{option}
+                            else if question.type === 'multiple'
+                                div.option
+                                    input.option-input(type='checkbox', name='question-'+ (i+1), value=j)
+                                    | #{option}
                     .space
                 button.button.hover-target#submitbtn(type='submit') submit poll
                 button.button.hover-target.sharebtn(type='button', data-clipboard-text='localhost:3000/simpoll/polls/'+curPoll._id+'/complete') share poll
@@ -38,14 +39,15 @@ block content
                     }
                     
                 h3.questionLabel #{question.question}
-                - for(var j = 0; j < question.responses.length; j++)
+                - for(var j = 0; j < question.options.length; j++)
                     //- progress bar to show % of votes
-                    - var prog = Math.round(100 * (totalVotes > 0 ? (question.responses[j] / totalVotes) : 0))
-                    div.option
-                    | #{question.options[j] + ' ('+prog+'%)'}
-                    .progress-bar
-                        .progress(style='width:'+prog+'%;')
-                .space
+                    if question.options[j] != null
+                        - var prog = Math.round(100 * (totalVotes > 0 ? (question.responses[j] / totalVotes) : 0))
+                        div.option
+                        | #{question.options[j] + ' ('+prog+'%)'}
+                        .progress-bar
+                            .progress(style='width:'+prog+'%;')
+                    .space
             button.button.hover-target.sharebtn(type='button', data-clipboard-text='localhost:3000/simpoll/polls/'+curPoll._id+'/complete') share poll
         
 

@@ -16,7 +16,17 @@ const dbInterface = require('../DB_Interface');
 //var poll = require(<path to poll module>)
 
 exports.pollList = function(req,res){
-    res.send("NOT IMPLEMENTED: Print out a list of all polls in database");
+    //res.send("NOT IMPLEMENTED: Print out a list of all polls in database");
+
+    res.locals.session = req.session
+    dbInterface.pollAll(function (err, pollList) {
+        if (err) {
+            res.send(err)
+            return
+        }
+
+        res.render('pollList', { title: 'All Polls', poll_list: pollList })
+    })
 };
 
 exports.pollDetail = function(req,res){
@@ -159,13 +169,13 @@ exports.pollCreatePost = [
             return;
         }else{
             //construct array of questions depending on input questions, ugly if statement does this
-            var questions = [{type: req.body['questionType-1'], question: req.body['question-1'], options: [req.body['option-1-1'],req.body['option-1-2'],req.body['option-1-3'],req.body['option-1-4']], responses: [] }]
+            var questions = [{type: req.body['questionType-1'], question: req.body['question-1'], options: [req.body['option-1-1'],req.body['option-1-2'],req.body['option-1-3'],req.body['option-1-4']], responses: [0,0,0,0] }]
             if(req.body['questionType-2']){
-                questions.push({type: req.body['questionType-2'], question: req.body['question-2'], options: [req.body['option-2-1'],req.body['option-2-2'],req.body['option-2-3'],req.body['option-2-4']], responses: [] })
+                questions.push({type: req.body['questionType-2'], question: req.body['question-2'], options: [req.body['option-2-1'],req.body['option-2-2'],req.body['option-2-3'],req.body['option-2-4']], responses: [0,0,0,0] })
                 if(req.body['questionType-3']){
-                    questions.push({type: req.body['questionType-3'], question: req.body['question-3'], options: [req.body['option-3-1'],req.body['option-3-2'],req.body['option-3-3'],req.body['option-3-4']], responses: [] })
+                    questions.push({type: req.body['questionType-3'], question: req.body['question-3'], options: [req.body['option-3-1'],req.body['option-3-2'],req.body['option-3-3'],req.body['option-3-4']], responses: [0,0,0,0] })
                     if(req.body['questionType-4']){
-                        questions.push({type: req.body['questionType-4'], question: req.body['question-4'], options: [req.body['option-4-1'],req.body['option-4-2'],req.body['option-4-3'],req.body['option-4-4']], responses: [] })
+                        questions.push({type: req.body['questionType-4'], question: req.body['question-4'], options: [req.body['option-4-1'],req.body['option-4-2'],req.body['option-4-3'],req.body['option-4-4']], responses: [0,0,0,0] })
                     }
                 }
             }
@@ -220,8 +230,9 @@ exports.pollCompleteGet = function(req,res){
                     }else{
                         //if the current user has already voted on said poll
                         if(res.locals.session.votedPolls){
-                            res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: userVotedOnPoll(res.locals.session.user_id, res.locals.session.votedPolls)});    
-                            return;
+                            // the 'in' operator only works with properties of json's, changed to includes function for successfull search of voted on array
+                            res.render('pollVote', { curPoll: newPoll, poll_owner: ownsPoll, voted_on: res.locals.session.votedPolls.includes(res.locals.session.user_id)});    
+                            res.end(); //cannot end a response before rendering.
                         }else{
                             res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: false});    
                             return;
@@ -293,19 +304,14 @@ function userOwnsPoll(userId, pollId, cb){
         }else{
             for(var i = 0; i < curUser.polls.length; i++){
                 if(String(curUser.polls[i]) == String(pollId)){
-                    if (cb)  return cb(null, true);
+                    if (cb){
+                        cb(null, true)
+                        return // must return here to end the function and not call the callback 2 times
+                    }
                 }
             }
             if(cb) cb(null,false);
             
         }
     })
-}
-
-function userVotedOnPoll(userId, pollVotesList){
-    for (val in pollVotesList){
-        if (String(userId) == (pollVotesList[val]))
-            return true;
-    }
-    return false;
 }
