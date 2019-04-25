@@ -284,6 +284,9 @@ function userAddPoll(userID, pollID, cb){
     });
 }
 
+//gets the list of polls the user has created
+//Parameters: 'userID' (string type), callback function
+//Callback: error argument, poll list
 function userGetPolls(userID, cb){
     User.findById(userID).populate('polls').exec(function(err, user){
         if(err) {
