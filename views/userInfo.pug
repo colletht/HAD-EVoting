@@ -27,7 +27,7 @@ block content
                 | #{curUser.username}
         .accountPolls
             h3.title#user-polls User Polls
-            ul
+            ul#poll-list
                 each poll in user_pollList
                     li.poll
                         a(href='/simpoll/polls/' + poll._id + '/complete')
