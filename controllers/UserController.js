@@ -33,7 +33,14 @@ exports.userDetail = function(req, res){
         if(err)
             res.send(err);
         else{
-            res.render('userInfo', {title: "User Information", curUser: curUser, user_pollList: curUser.polls});
+            dbInterface.userGetPolls(req.params.id, (err, pollList) => {
+                if(err){
+                    res.send(String(err));
+                    console.log("Error displaying user: " + String(err));
+                }else{            
+                    res.render('userInfo', {title: "User Information", curUser: curUser, user_pollList: pollList});
+                }
+            })
         }
     });
 };
