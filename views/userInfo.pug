@@ -14,20 +14,22 @@ block append styles
 block content
     .userInfo
         h1#header #{curUser.username}
-        .allInfo
-            .accountInfo
-                h3 Account Information
-
-                ul
-                    li Full Name: #{curUser.fullName}
-                    li Email:     #{curUser.email}
-                    li Username:  #{curUser.username}
-            .accountPolls
-                h3 User Polls
-                    p TODO: add poll display functionality
-//-            ul
-                 each poll in polls
-                     li  
-                        a(href = poll.url) #{poll.name}
-                else
-//-                    p You don't have any polls yet. Why not create one now!
+        .accountInfo
+            h3.title User Information
+            .info 
+                span Full Name: 
+                | #{curUser.fullName}
+            .info 
+                span Email:     
+                | #{curUser.email}
+            .info 
+                span Username:  
+                | #{curUser.username}
+        .accountPolls
+            h3.title#user-polls User Polls
+            ul
+                each poll in user_pollList
+                    li.poll
+                        a(href='/simpoll/polls/' + poll._id + '/complete')
+                            h3.poll-name #{poll.name}
+                    .space
