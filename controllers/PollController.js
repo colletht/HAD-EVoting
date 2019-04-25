@@ -214,33 +214,67 @@ exports.pollCompleteGet = function(req,res){
                 res.send(String(err));
                 console.log(String(err));
             }else{
-                dbInterface.userFind(res.locals.session.user_id, function(err, curUser){
+                userOwnsPoll(res.locals.session.user_id, req.params.id, (err, ownsPoll) => {
                     if(err){
                         res.send(String(err));
-                        console.log(String(err))
                     }else{
-                        var poll_owner;
-                        for(var i = 0; i < curUser.polls.length; i++){
-                            if(String(curUser.polls[i]) == String(newPoll._id)){
-                                poll_owner = true;
-                                break;
-                            }
-                        }
-                        res.render('pollVote', {curPoll:  newPoll, poll_owner: poll_owner});
+                        console.log("Owns Poll: " + ownsPoll)
+                        //if the current user has already voted on said poll
+                        if(res.locals.session.votedPolls){
+                            res.end();
+                            res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: req.params.id in res.locals.session.votedPolls});    
+                        }else
+                            res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: false});    
                     }
                 })
-                
             }
         })
     }
-
 };
 
-exports.pollCompletePost = [
-    
-];
+//no callback chain or validation needed here because the nature of the form prohibits it
+exports.pollCompletePost = function(req,res,next) {
+        res.locals.title = 'pollCompletePost';
+        res.locals.session = req.session;
+        //add poll id to sessions completed id's, check if votedPolls exists first though
+        if(res.locals.session.votedPolls){
+            res.locals.session.votedPolls.push(req.params.id);
+        }else{
+            res.locals.session.votedPolls = [req.params.id];
+        }
+
+        console.log(req.body);
+
+        /*
+        var responseArr = [];
+            for(var key in req.body){
+            var tmpRes = [];
+            for(var val in req.body[key]){
+                tmpRes.push(parseInt(req.body[key][val]));
+            }
+            responseArr.push(tmpRes);
+        }
+        */
+
+        //creates nested array of answers reqired for pollAddResponse parameters
+        var responseArr = [];
+        for(var val in req.body){
+            responseArr.push(parseInt(req.body[val]));
+        }
+        console.log(responseArr);
+        
+        dbInterface.pollAddResponse(req.params.id, responseArr, (err, respondedPoll) => {
+            if(err){
+                console.log("Error in adding response " + String(err));
+                res.send(String(err));
+            }else{
+                res.redirect('/simpoll/polls/'+ req.params.id + '/complete');     
+            }
+        })
+};
 
 /*function(req,res){
+    console.log(req.body);
     res.send("NOT IMPLEMENTED: Handles the completion of the poll by user POST");
 };*/
 
@@ -252,11 +286,22 @@ exports.pollEndPost = function(req,res){
     res.send("NOT IMPLEMENTED: Handles the ending of polling period POST");
 };
 
-exports.pollShareGet = function(req,res){
-    res.send("NOT IMPLEMENTED: Handles the share form for poll GET");
-};
 
-exports.pollSharePost = function(req,res){
-    res.send("NOT IMPLEMENTED: Handles the share form for a poll POST");
-};
-
+//helper function, accepts userID , pollID and a callback(err, bool) true if user owns poll and false if they do not
+function userOwnsPoll(userId, pollId, cb){
+    dbInterface.userFind(userId, (err, curUser) => {
+        if(err){
+            console.log("Error in checking if user owns poll: " + String(err));
+            if (cb) cb(err, false);
+            return;
+        }else{
+            for(var i = 0; i < curUser.polls.length; i++){
+                if(String(curUser.polls[i]) == String(pollId)){
+                    if (cb) cb(null, true);
+                }
+            }
+            if(cb) cb(null,false);
+            
+        }
+    })
+}
