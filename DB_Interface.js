@@ -78,15 +78,22 @@ function pollAddResponse(id, votes, cb){
             return
         }
         
+    
         var questions = poll.questions.toObject() // gets the questions list from the poll
+
 
         //adds one vote to each response selected in questions
         for(var i = 0; i < votes.length; i++){
             for(var j = 0; j < votes[i].length; j++){
+                questions[i].responses;
+                if(!questions[i].responses.length){
+                    console.log("here")
+                    questions[i].responses = [0,0,0,0];
+                }
                 questions[i].responses[votes[i][j]] += 1
             }
         }
-
+        console.log(questions);
         poll.questions = questions // puts new questions list into the poll document
         poll.save(function(err){
             if (err) {
