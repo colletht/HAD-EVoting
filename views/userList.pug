@@ -1,0 +1,17 @@
+extends mainNav
+
+block append styles
+    link(rel='stylesheet' href='/styles/userList.css')
+
+block append vars
+    - var currentPage = 'all users'
+
+block content
+    .user-list
+        h1#header all users
+        ul
+            each user in user_list
+                li.user
+                    a(href='/simpoll/users/' + user._id)
+                        h3.user-name #{user.username}
+                .space

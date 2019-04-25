@@ -1,16 +1,17 @@
-// author: Harry Collet
-// date: 4/18/19
-// description: This is the page that will list all public polls on our website
-//              This page extends layout
+extends mainNav
 
-extends layout
+block append styles
+    link(rel='stylesheet' href='/styles/pollList.css')   
+
+block append vars
+    - var currentPage = 'all polls'    
+
 block content
-    h1 = title
-
-    ul
-        each poll in pollList
-            li
-                a(href = poll.url) #{poll.name}
-                | (created: #{poll.dateCreated})
-        else
-            li There are no polls open at this time
+    .poll-list
+        h1#header all polls
+        ul
+            each poll in poll_list
+                li.poll
+                    a(href='/simpoll/polls/' + poll._id + '/complete')
+                        h3.poll-name #{poll.name}
+                .space
