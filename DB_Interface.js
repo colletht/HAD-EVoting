@@ -284,6 +284,16 @@ function userAddPoll(userID, pollID, cb){
     });
 }
 
+function userGetPolls(userID, cb){
+    User.findById(userID).populate('polls').exec(function(err, user){
+        if(err) {
+            if (cb) cb(err, null)
+            return
+        }
+
+        if (cb) cb(null, user.polls)
+    })
+}
 
 //exporting functions so they are able to be used in other files
 module.exports = {
@@ -300,5 +310,6 @@ module.exports = {
     userAll,
     userLogin,
     userFind,
-    userAddPoll
+    userAddPoll,
+    userGetPolls
 }
