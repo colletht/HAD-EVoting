@@ -29,35 +29,6 @@ app.use(session({
 var routes = require('./controllers/simpoll');
 app.use('/',routes);
 
-//the client will send a get request to the "/" link when first joining 
-// and we respond by rendering the index view
-//app.get('/', (req, res) => {
-//   res.locals.title = 'SimPoll' // can set variables in the pug file this way
-//   res.locals.session = req.session // adds the session variable to the pug file so we are able to access it
- //  res.render('index')
-   //console.log('User connected!') 
-//});
-
-
-
-
-//testing for other pages
-//app.get('/users/register', function(req, res){
-//   res.locals.session = req.session // transfer session to new page
-//   res.render('userRegister', { title: 'Register' })
-//})
-
-
-//Example of viewing a post request:
-
-//to be able to view the body of requests
-
-//app.post('/users/register', function(req, res){
-//   console.log(req.body) // prints body of request
-//})
-
-
-
 
 //This starts the server and displays in the terminal which port the server is listening on
 //Connect by typing "localhost:3000" on web browser
