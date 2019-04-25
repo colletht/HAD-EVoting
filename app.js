@@ -9,8 +9,8 @@ const app = Express() //Instantiates an express object
 const compression = require('compression');
 const helmet = require('helmet');
 
-app.use(compression);
-app.use(helmet);
+app.use(compression());
+app.use(helmet());
 
 app.use(Express.json())
 app.use(Express.urlencoded())
