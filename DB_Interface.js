@@ -85,7 +85,8 @@ function pollAddResponse(id, votes, cb){
         //adds one vote to each response selected in questions
         for(var i = 0; i < votes.length; i++){
             for(var j = 0; j < votes[i].length; j++){
-                questions[i].responses;
+                //Harry
+                questions[i].responses;     //without this line it breaks when it tries to add the first response, not entirley sure why
                 if(!questions[i].responses.length){
                     console.log("here")
                     questions[i].responses = [0,0,0,0];
