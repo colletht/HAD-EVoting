@@ -37,5 +37,5 @@ app.use('/',routes);
 //This starts the server and displays in the terminal which port the server is listening on
 //Connect by typing "localhost:3000" on web browser
 app.listen((process.env.PORT || 3000 ), () => {
-   console.log('Listening ' + process.env.PORT);
+   console.log('Listening ' + (process.env.PORT ? process.env.PORT : 3000));
 });  
