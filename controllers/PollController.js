@@ -52,6 +52,9 @@ exports.pollCreatePost = [
     //checks that pollname is there and is within 50 characters
     body('pollName').trim().isLength({min:1,max:50}).withMessage('You must enter a name for your poll within 1-50 characters'),
 
+    //checks that type has been selected
+    body('questionType-1').isLength({min:1}).withMessage('You must select a questionType'),
+
     //checks that the first question is of appropriate length. NOTE: no need to check type because that will always be a valid value
     body('question-1').trim().isLength({min:1,max:200}).withMessage("You must enter at least one question within 200 characters"),
 
@@ -77,6 +80,9 @@ exports.pollCreatePost = [
     //checks that the first question is of appropriate length. NOTE: no need to check type because that will always be a valid value
     body('question-2').optional({checkFalsy:true}).trim().isLength({min:1,max:200}).withMessage("You must enter at least one question within 200 characters"),
 
+    //checks that type has been selected
+    body('questionType-2').optional({checkFalsy:true}).isLength({min:1}).withMessage('You must select a questionType'),
+
     //checks mandatory first response is given and that it is of appropriate length (50 characters)
     //custom function added here checks if question-2 field is defined
     //TODO: make this work: .custom((value, {req}) => req.body.question-2 !== undefined)
@@ -96,6 +102,9 @@ exports.pollCreatePost = [
     //checks that the first question is of appropriate length. NOTE: no need to check type because that will always be a valid value
     body('question-3').optional({checkFalsy:true}).trim().isLength({min:1,max:200}).withMessage("You must enter at least one question within 200 characters"),
 
+    //checks that type has been selected
+    body('questionType-3').optional({checkFalsy:true}).isLength({min:1}).withMessage('You must select a questionType'),
+
     //checks mandatory first response is given and that it is of appropriate length (50 characters)
     //custom function added here checks if question-2 field is defined
     //TODO: make this work: .custom((value, {req}) => req.body.question-2 !== undefined)
@@ -114,6 +123,9 @@ exports.pollCreatePost = [
 
     //checks that the first question is of appropriate length. NOTE: no need to check type because that will always be a valid value
     body('question-4').optional({checkFalsy:true}).trim().isLength({min:1,max:200}).withMessage("You must enter at least one question within 200 characters"),
+
+    //checks that type has been selected
+    body('questionType-4').optional({checkFalsy:true}).isLength({min:1}).withMessage('You must select a questionType'),
 
     //checks mandatory first response is given and that it is of appropriate length (50 characters)
     //custom function added here checks if question-2 field is defined
