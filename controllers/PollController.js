@@ -231,7 +231,7 @@ exports.pollCompleteGet = function(req,res){
                         //if the current user has already voted on said poll
                         if(res.locals.session.votedPolls){
                             // the 'in' operator only works with properties of json's, changed to includes function for successfull search of voted on array
-                            res.render('pollVote', { curPoll: newPoll, poll_owner: ownsPoll, voted_on: res.locals.session.votedPolls.includes(res.locals.session.user_id)});    
+                            res.render('pollVote', { curPoll: newPoll, poll_owner: ownsPoll, voted_on: res.locals.session.votedPolls.includes(req.params.id)});    
                             res.end(); //cannot end a response before rendering.
                         }else{
                             res.render('pollVote', {curPoll:  newPoll, poll_owner: ownsPoll, voted_on: false});    
@@ -250,9 +250,9 @@ exports.pollCompletePost = function(req,res,next) {
         res.locals.session = req.session;
         //add poll id to sessions completed id's, check if votedPolls exists first though
         if(res.locals.session.votedPolls){
-            res.locals.session.votedPolls.push(String(res.locals.session.user_id));
+            res.locals.session.votedPolls.push(String(req.params.id));
         }else{
-            res.locals.session.votedPolls = [String(res.locals.session.user_id)];
+            res.locals.session.votedPolls = [String(req.params.id)];
         }
 
         console.log(req.body);
