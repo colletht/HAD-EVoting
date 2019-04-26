@@ -96,7 +96,10 @@ exports.userRegisterPost = [
                 }else{
                     console.log("succesfully registered user " + newUser.username + ", with id: " + newUser._id);
                     res.locals.session.user_id = newUser._id;
-                    res.redirect('/simpoll/users/' + newUser._id);
+                    if(res.locals.session.nextPage)
+                        res.redirect(res.locals.session.nextPage);
+                    else
+                        res.redirect('/simpoll/users/' + newUser._id);
 
                 }
                 
