@@ -15,7 +15,9 @@ block content
                     input.form#username(type='text', placeholder='Username', name='username', value=(undefined === username ? '' : username.name))
                 li
                     input.form#password(type='password', placeholder='Password', name='password', value=(undefined === password ? '' : password.name))
-            button.button.hover-target(type='submit') login
+            button.button.hover-target#submit(type='submit') login
+            a(href='/simpoll/users/register')
+                button.button.hover-target(type='button') register
         //- when the button is clicked a post request is sent to '/users/login'
 
         if errors
